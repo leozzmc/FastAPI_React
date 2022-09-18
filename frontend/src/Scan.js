@@ -1,20 +1,20 @@
-// import React, { useEffect, useState } from 'react'
 import React from 'react'
 
 let url = 'http://127.0.0.1:8000'
 let val = {
   id: 0,
-  scan_url: "www.ntust.edu.tw",
+  data: ['www.ntust.edu.tw', 'www.ntpu.edu.tw', 'www.ntu.edu.tw'],
 }
 
 
+
 const Scan = ()=> {
-    function postData(url, scan_url) {
+    function postData(url, data) {
       const requestOptions = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           //body: JSON.stringify(data),
-          body: JSON.stringify(scan_url),
+          body: JSON.stringify(data),
           redirect: 'follow',
       }
 
@@ -23,7 +23,7 @@ const Scan = ()=> {
           .then((result) => console.log(result))
           .catch((error) => console.log('error', error))
   }
-    function getData(url, scan_url) {
+    function getData(url, data) {
         fetch(url, {
             method: 'GET',
             redirect: 'follow',
@@ -35,7 +35,7 @@ const Scan = ()=> {
     // useEffect(() => {}, [])
     return (
       <div>
-          Scan
+          <h1>VirusTotal API Testing</h1>
           <button onClick={postData(url, val)}>postData</button>
           <button onClick={getData(url, val)}>getData</button>
       </div>

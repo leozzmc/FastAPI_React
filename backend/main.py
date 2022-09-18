@@ -22,13 +22,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class URL(BaseModel):
-    id: int
-    scan_url: str
+
 
 @app.get("/")
-def getScanResult():
-    id = base64.urlsafe_b64encode("www.ntust.edu.tw".encode()).decode().strip("=")
+class URL(BaseModel):
+    id: int
+    scan_url: list
+
+def getScanResult(input: URL):
+    id = base64.urlsafe_b64encode(input.scan_url.encode()).decode().strip("=")
     print("-----------------Report------------")
     url_4Report = f"https://www.virustotal.com/api/v3/urls/{id}"
     header_4Report = {"accept": "application/json","x-apikey":APIKEY}
@@ -38,9 +40,9 @@ def getScanResult():
 
 
 @app.post("/scanURL")
-def scanURL():
+def scanURL(input: URL):
     url = "https://www.virustotal.com/api/v3/urls"
-    payload = "url=www.ntust.edu.tw"
+    payload = f"url={input.scan_url}"
     headers = {
     "accept": "application/json",
     "content-type": "application/x-www-form-urlencoded",
