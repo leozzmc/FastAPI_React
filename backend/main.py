@@ -2,13 +2,29 @@ import json
 import requests
 import base64
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
-#APIKEY=62d08a952c7f8f4363cb0b55bdfd43830cb1a851205de2ca7a107bbf3c21cdbd
+APIKEY= "62d08a952c7f8f4363cb0b55bdfd43830cb1a851205de2ca7a107bbf3c21cdbd"
 
 # ----------- FAST API -----------------
 app = FastAPI()
+# -------- Fix cross origin problems -------
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-
+class URL(BaseModel):
+    id: int
+    scan_url: str
 
 @app.get("/")
 def getScanResult():
@@ -16,24 +32,23 @@ def getScanResult():
     print("-----------------Report------------")
     url_4Report = f"https://www.virustotal.com/api/v3/urls/{id}"
     header_4Report = {"accept": "application/json","x-apikey":APIKEY}
-    response = requests.get(url_4Report, headers=header_4Report)
+    response = requests.get(url=url_4Report, headers=header_4Report)
     print(response.text)
-    return {"data":response.text}
+    return {"Method":"GET","status": "SUCCESS", "data":response.text}
 
 
-
-
-# url = "https://www.virustotal.com/api/v3/urls"
-
-# payload = "url=www.google.com"
-# headers = {
-#     "accept": "application/json",
-#     "content-type": "application/x-www-form-urlencoded",
-#     "x-apikey":"62d08a952c7f8f4363cb0b55bdfd43830cb1a851205de2ca7a107bbf3c21cdbd"
-# }
-
-# response = requests.post(url, data=payload, headers=headers)
-# print(response.text)
+@app.post("/scanURL")
+def scanURL():
+    url = "https://www.virustotal.com/api/v3/urls"
+    payload = "url=www.ntust.edu.tw"
+    headers = {
+    "accept": "application/json",
+    "content-type": "application/x-www-form-urlencoded",
+    "x-apikey":APIKEY
+    }
+    response = requests.post(url,data=payload, headers=headers)
+    print(response.text)
+    return {"Method":"POST","status": "SUCCESS", "data":response.text}
 
 
 
