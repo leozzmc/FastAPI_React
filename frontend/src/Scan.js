@@ -1,29 +1,11 @@
 import React from 'react'
 
 let url = 'http://127.0.0.1:8000'
-let val = {
-  id: 0,
-  data: ['www.ntust.edu.tw', 'www.ntpu.edu.tw', 'www.ntu.edu.tw'],
-}
 
 
 
 const Scan = ()=> {
-    function postData(url, data) {
-      const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          //body: JSON.stringify(data),
-          body: JSON.stringify(data),
-          redirect: 'follow',
-      }
-
-      fetch(`${url}/scanURL`, requestOptions)
-          .then((response) => response.json())
-          .then((result) => console.log(result))
-          .catch((error) => console.log('error', error))
-  }
-    function getData(url, data) {
+    function getData(url) {
         fetch(url, {
             method: 'GET',
             redirect: 'follow',
@@ -32,12 +14,10 @@ const Scan = ()=> {
             .then((result) => console.log(result))
             .catch((error) => console.log('error', error))
     }
-    // useEffect(() => {}, [])
     return (
       <div>
-          <h1>VirusTotal API Testing</h1>
-          <button onClick={postData(url, val)}>postData</button>
-          <button onClick={getData(url, val)}>getData</button>
+          <h1>Meme Catcher</h1>
+          <button onClick={getData(url)}>getData</button>
       </div>
     )
 }
